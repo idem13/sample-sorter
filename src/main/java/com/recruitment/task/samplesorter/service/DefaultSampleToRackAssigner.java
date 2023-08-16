@@ -24,10 +24,14 @@ public class DefaultSampleToRackAssigner implements DefaultSampleSorterService.S
     public Assignment assign(@NonNull final Sample sample) {
         final var actualRack = racksRepository.findAll().stream()
                 .filter(rack -> !rack.isFull())
-                .filter(rack -> rack.getSamples().stream().noneMatch(s -> s.id().equals(sample.id())))
+                .filter(rack -> isSampleWithIdAlreadyAssigned(sample, rack))
                 .filter(rack -> policyChecker.check(sample, rack))
                 .findFirst()
                 .orElseThrow(() -> new BusinessException("Cannot assign sample to any rack"));
         return new Assignment(actualRack.getId(), sample);
+    }
+
+    private boolean isSampleWithIdAlreadyAssigned(final Sample sample, final Rack rack) {
+        return rack.getSamples().stream().noneMatch(s -> s.id().equals(sample.id()));
     }
 }
