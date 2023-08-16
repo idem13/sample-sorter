@@ -13,7 +13,7 @@ import java.util.Set;
 @EqualsAndHashCode
 public class Rack {
 
-    private static final int CAPACITY = 1;
+    private static final int CAPACITY = 2;
 
     private final RackId id;
     private int slotsOccupied;

@@ -2,16 +2,15 @@ package com.recruitment.task.samplesorter.service;
 
 import com.recruitment.task.samplesorter.domain.Assignment;
 import com.recruitment.task.samplesorter.domain.Rack;
-import com.recruitment.task.samplesorter.domain.RackId;
 import com.recruitment.task.samplesorter.domain.Sample;
 import com.recruitment.task.samplesorter.exception.BusinessException;
+import com.recruitment.task.samplesorter.persistance.RacksRepository;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Component
+@RequiredArgsConstructor
 public class DefaultSampleToRackAssigner implements DefaultSampleSorterService.SampleToRackAssigner {
 
     public interface PolicyChecker {
@@ -19,23 +18,15 @@ public class DefaultSampleToRackAssigner implements DefaultSampleSorterService.S
     }
 
     private final PolicyChecker policyChecker;
-    private final Set<Rack> racks = new LinkedHashSet<>();
-
-    public DefaultSampleToRackAssigner(final PolicyChecker policyChecker) {
-        this.policyChecker = policyChecker;
-        racks.add(new Rack(new RackId(1)));
-        racks.add(new Rack(new RackId(2)));
-    }
-
+    private final RacksRepository racksRepository;
 
     @Override
     public Assignment assign(@NonNull final Sample sample) {
-        final var actualRack = racks.stream()
+        final var actualRack = racksRepository.findAll().stream()
                 .filter(rack -> !rack.isFull())
                 .filter(rack -> policyChecker.check(sample, rack))
                 .findFirst()
                 .orElseThrow(() -> new BusinessException("Cannot assign sample to any rack"));
-        actualRack.addSample(sample);
-        return new Assignment(actualRack.getId(), sample.id());
+        return new Assignment(actualRack.getId(), sample);
     }
 }

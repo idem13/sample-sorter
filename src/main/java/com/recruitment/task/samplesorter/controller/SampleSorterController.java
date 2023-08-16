@@ -1,16 +1,12 @@
 package com.recruitment.task.samplesorter.controller;
 
-import com.recruitment.task.samplesorter.domain.Assignment;
-import com.recruitment.task.samplesorter.domain.Patient;
-import com.recruitment.task.samplesorter.domain.Sample;
-import com.recruitment.task.samplesorter.domain.SampleId;
+import com.recruitment.task.samplesorter.domain.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @Slf4j
@@ -19,6 +15,7 @@ public class SampleSorterController {
 
     public interface SampleSorterService {
         Assignment assignSampleToRack(Sample sample);
+        Set<Rack> obtainRacks();
     }
 
     private final SampleSorterService sampleSorterService;
@@ -32,12 +29,23 @@ public class SampleSorterController {
     }
 
     private AssignmentDTO mapToAssignmentDTO(final Assignment assignment) {
-        return new AssignmentDTO(assignment.sampleId().id(), assignment.rackId().id());
+        return new AssignmentDTO(assignment.sample().id().id(), assignment.rackId().id());
     }
 
     private Sample mapToSample(final SampleDTO sampleDTO) {
         final var sampleId = new SampleId(sampleDTO.sampleId());
         return new Sample(sampleId, new Patient(sampleDTO.patientAge(), sampleDTO.patientCompany(),
                 sampleDTO.patientCityDistrict(), sampleDTO.patientVisionDefect()));
+    }
+
+    @GetMapping("/assignments")
+    @ResponseStatus(code = HttpStatus.OK)
+    AssignmentsDTO obtainAssignments() {
+        final var racks = sampleSorterService.obtainRacks();
+        return mapToAssignmentsDTO(racks);
+    }
+
+    private AssignmentsDTO mapToAssignmentsDTO(final Set<Rack> racks) {
+        return new AssignmentsDTO(racks);
     }
 }
