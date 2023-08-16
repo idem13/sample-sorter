@@ -37,7 +37,7 @@ class DefaultPolicyCheckerTest {
     void shouldReturnTrueWhenNoneOfPoliciesAreBroken() {
         // given
         final var sample = createSample();
-        final var rack = new Rack(new RackId(1));
+        final var rack = new Rack(new RackId(1), 2);
 
         given(policy1.check(sample, rack)).willReturn(true);
         given(policy2.check(sample, rack)).willReturn(true);
@@ -57,7 +57,7 @@ class DefaultPolicyCheckerTest {
     void shouldReturnFalseWhenOneOfPoliciesBroken() {
         // given
         final var sample = createSample();
-        final var rack = new Rack(new RackId(1));
+        final var rack = new Rack(new RackId(1), 2);
 
         given(policy1.check(sample, rack)).willReturn(true);
         given(policy2.check(sample, rack)).willReturn(false);

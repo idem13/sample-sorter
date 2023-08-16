@@ -20,7 +20,7 @@ class NoPatientOfTheSameAgeTest {
     @Test
     void shouldReturnFalseWhenPatientWithTheSameAgeIsAlreadyInRack() {
         // given
-        final var rack = new Rack(new RackId(1));
+        final var rack = new Rack(new RackId(1), 2);
         final var sample1 = createSample(30, "company1", "district1", "visionDefect1");
         final var sample2 = createSample(30, "company2", "district2", "visionDefect2");
         rack.addSample(sample1);
@@ -40,7 +40,7 @@ class NoPatientOfTheSameAgeTest {
     @Test
     void shouldReturnTrueWhenNoPatientWithTheSameAgeIsInRack() {
         // given
-        final var rack = new Rack(new RackId(1));
+        final var rack = new Rack(new RackId(1), 2);
         final var sample1 = createSample(30, "company1", "district1", "visionDefect1");
         final var sample2 = createSample(31, "company2", "district2", "visionDefect2");
         rack.addSample(sample1);

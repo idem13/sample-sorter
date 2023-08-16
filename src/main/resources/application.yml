@@ -1,0 +1,3 @@
+app:
+  rack.capacity: 2
+  rack.quantity: 2

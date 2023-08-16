@@ -5,21 +5,21 @@ import com.recruitment.task.samplesorter.domain.Rack;
 import com.recruitment.task.samplesorter.domain.RackId;
 import com.recruitment.task.samplesorter.exception.BusinessException;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.IntStream;
 
-@Component
+@RequiredArgsConstructor
 @Slf4j
 public class RacksRepository {
 
     private final Set<Rack> racks = new LinkedHashSet<>();
 
-    public RacksRepository() {
-        racks.add(new Rack(new RackId(1)));
-        racks.add(new Rack(new RackId(2)));
+    public RacksRepository(final int rackQuantity, final int rackCapacity) {
+        IntStream.rangeClosed(1, rackQuantity).forEach(id -> racks.add(new Rack(new RackId(id), rackCapacity)));
     }
 
     public void persist(@NonNull Assignment assignment) {

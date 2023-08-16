@@ -13,11 +13,10 @@ import java.util.Set;
 @EqualsAndHashCode
 public class Rack {
 
-    private static final int CAPACITY = 2;
-
     private final RackId id;
-    private int slotsOccupied;
-    private final Set<Sample> samples = new HashSet<>(CAPACITY);
+    private final int capacity;
+    private final Set<Sample> samples = new HashSet<>();
+    private int slotsOccupied = 0;
 
     public void addSample(final Sample sample) {
         if (samples.contains(sample)) {
@@ -31,6 +30,6 @@ public class Rack {
     }
 
     public boolean isFull() {
-        return slotsOccupied == CAPACITY;
+        return slotsOccupied == capacity;
     }
 }

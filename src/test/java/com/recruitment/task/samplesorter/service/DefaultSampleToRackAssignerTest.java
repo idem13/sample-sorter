@@ -35,9 +35,9 @@ class DefaultSampleToRackAssignerTest {
     void shouldAssignSampleToRack() {
         // given
         final var sample = createSample();
-        final var rack1 = new Rack(new RackId(1));
+        final var rack1 = new Rack(new RackId(1), 2);
         final var rack2Id = new RackId(2);
-        final var rack2 = new Rack(rack2Id);
+        final var rack2 = new Rack(rack2Id, 2);
 
         final var racks = new LinkedHashSet<Rack>();
         racks.add(rack1);
@@ -61,12 +61,12 @@ class DefaultSampleToRackAssignerTest {
         // given
         final var sample1 = createSample();
         final var sample2 = createSample();
-        final var rack1 = new Rack(new RackId(1));
+        final var rack1 = new Rack(new RackId(1), 2);
         rack1.addSample(sample1);
         rack1.addSample(sample2);
 
         final var rack2Id = new RackId(2);
-        final var rack2 = new Rack(rack2Id);
+        final var rack2 = new Rack(rack2Id, 2);
 
         final var racks = new LinkedHashSet<Rack>();
         racks.add(rack1);
@@ -87,9 +87,9 @@ class DefaultSampleToRackAssignerTest {
     void shouldAssignSampleToAnotherRackWhenSampleBreakPolicy() {
         // given
         final var sample = createSample();
-        final var rack1 = new Rack(new RackId(1));
+        final var rack1 = new Rack(new RackId(1), 2);
         final var rack2Id = new RackId(2);
-        final var rack2 = new Rack(rack2Id);
+        final var rack2 = new Rack(rack2Id, 2);
 
         final var racks = new LinkedHashSet<Rack>();
         racks.add(rack1);
